@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Full Picture — Surrey Policing Record</title>
+<style>
+  :root{
+    --paper:#EDEEEA; --paper-raised:#F7F7F4; --ink:#1B2430; --ink-soft:#4A5361;
+    --rule:#C7C2B8; --teal:#2B5D63; --teal-deep:#1D4247; --amber:#B65C1F; --verified:#3F6C4C;
+    --mono:"IBM Plex Mono","SF Mono","Courier New",monospace;
+    --serif:"Iowan Old Style","Source Serif 4",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,"Public Sans","Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.55;}
+  a{color:var(--teal-deep);}
+  .wrap{max-width:940px; margin:0 auto; padding:0 28px;}
+
+  header.masthead{border-bottom:2px solid var(--ink); padding:22px 0 16px; background:var(--paper);}
+  .masthead-row{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;}
+  .brand{font-family:var(--mono); font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-soft);}
+  .brand strong{color:var(--ink);}
+  nav.top{font-family:var(--mono); font-size:12.5px; display:flex; gap:20px; flex-wrap:wrap;}
+  nav.top a{color:var(--ink-soft); text-decoration:none; letter-spacing:0.04em;}
+  nav.top a:hover{color:var(--teal-deep); text-decoration:underline;}
+  nav.top a.current{color:var(--ink); border-bottom:1.5px solid var(--amber); padding-bottom:2px;}
+
+  .pagehead{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;}
+  .eyebrow::before{content:"§ ";}
+  h1{font-family:var(--serif); font-weight:500; font-size:clamp(26px,4vw,38px); line-height:1.2; margin:0 0 16px; max-width:22ch;}
+  .dek{font-size:16.5px; color:var(--ink-soft); max-width:66ch; margin:0 0 20px;}
+
+  .howto{background:var(--paper-raised); border:1px solid var(--rule); padding:16px 20px; font-size:13.5px; color:var(--ink-soft); display:flex; gap:14px; align-items:flex-start;}
+  .howto .icon{font-family:var(--mono); color:var(--teal-deep); font-size:16px; flex-shrink:0;}
+
+  section.findings{padding:40px 0;}
+  section.findings + section.findings{border-top:1px solid var(--rule);}
+
+  .finding-num{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; color:var(--amber); margin-bottom:10px;}
+
+  /* LAYER 1: headline */
+  .headline{
+    border:1.5px solid var(--ink); background:var(--paper-raised); padding:26px 28px; margin-bottom:0;
+  }
+  .headline h2{font-family:var(--serif); font-weight:500; font-size:22px; margin:0 0 10px; line-height:1.3;}
+  .headline .stat{font-family:var(--serif); font-size:clamp(26px,3.5vw,34px); color:var(--amber); margin:6px 0 12px;}
+  .headline p{font-size:15px; color:var(--ink-soft); margin:0; max-width:64ch;}
+
+  /* LAYER 2 + 3: details/summary progressive disclosure */
+  details{border:1px solid var(--rule); border-top:none; background:var(--paper);}
+  details > summary{
+    list-style:none; cursor:pointer; padding:14px 28px; font-family:var(--mono); font-size:12.5px;
+    letter-spacing:0.04em; color:var(--teal-deep); display:flex; align-items:center; gap:10px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  details > summary::-webkit-details-marker{display:none;}
+  details > summary::before{content:"+"; font-size:16px; width:16px; display:inline-block; color:var(--amber);}
+  details[open] > summary::before{content:"–";}
+  details > summary:hover{background:rgba(43,93,99,0.05);}
+  .layer2-body{padding:6px 28px 22px; font-size:14.5px;}
+  .layer2-body p{margin:0 0 14px; max-width:66ch;}
+
+  /* nested layer 3 inside layer 2 */
+  .layer2-body details{margin-top:14px; border:1px solid var(--rule); background:var(--paper-raised);}
+  .layer2-body details > summary{padding:11px 18px; font-size:11.5px; color:var(--ink-soft);}
+  .layer2-body details > summary::before{color:var(--teal);}
+  .layer3-body{padding:4px 18px 18px;}
+
+  table.mini{width:100%; border-collapse:collapse; font-size:12.5px; margin:8px 0;}
+  table.mini th{text-align:left; font-family:var(--mono); font-size:10px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-soft); border-bottom:1px solid var(--ink); padding:6px 8px 6px 0;}
+  table.mini td{padding:6px 8px 6px 0; border-bottom:1px solid var(--rule); font-family:var(--mono);}
+  table.mini td:first-child{font-family:var(--sans);}
+
+  .src-stamp{font-family:var(--mono); font-size:10.5px; color:var(--teal-deep); border:1px solid var(--teal); padding:2px 7px; display:inline-block; margin:4px 6px 4px 0; background:rgba(43,93,99,0.06);}
+  .quote{border-left:2px solid var(--amber); padding:6px 0 6px 16px; margin:12px 0; font-style:italic; color:var(--ink-soft); font-size:13.5px;}
+
+  .verdict{margin-top:0; padding:16px 18px; background:rgba(63,108,76,0.06); border-left:3px solid var(--verified); font-size:13px;}
+  .verdict .label{font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--verified); margin-bottom:6px;}
+  .gap-flag{padding:16px 18px; background:rgba(182,92,31,0.07); border-left:3px solid var(--amber); font-size:13px; margin-top:10px;}
+  .gap-flag .label{font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--amber); margin-bottom:6px;}
+
+  .synthesis{margin-top:50px; padding:34px 32px; background:var(--ink); color:var(--paper);}
+  .synthesis .label{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#B8C4C6; margin-bottom:14px;}
+  .synthesis h2{font-family:var(--serif); font-weight:500; font-size:21px; color:#fff; margin:0 0 16px;}
+  .synthesis ol{padding-left:20px; margin:0 0 20px;}
+  .synthesis li{margin-bottom:10px; font-size:14px; color:#D8D9D3;}
+  .synthesis .caveat-final{font-size:13px; color:#B8C4C6; border-top:1px solid #3A4552; padding-top:16px; margin-top:16px;}
+
+  footer{padding:40px 0 60px; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft);}
+  footer .rule{border:none; border-top:1px solid var(--rule); margin:0 0 20px;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <div class="brand"><strong>SURREY POLICING RECORD</strong> — public evidence archive</div>
+    <nav class="top">
+      <a href="index.html">Home</a>
+      <a href="marac.html">MARAC Gap</a>
+      <a href="vatp.html">VATP Arrests</a>
+      <a href="findings.html" class="current">The Full Picture</a>
+      <a href="#" title="Not yet built">FOI Archive</a>
+    </nav>
+  </div>
+</header>
+
+<div class="pagehead wrap">
+  <div class="eyebrow">Synthesis — start here</div>
+  <h1>The full picture, in three layers</h1>
+  <p class="dek">Everything below starts with the headline finding — what we found, in plain terms. Click "How do we know this?" for the explanation. Inside that, click again for the raw data, sources, and exact figures. Nothing on this page requires you to take our word for it.</p>
+  <div class="howto">
+    <span class="icon">›</span>
+    <span><strong>Layer 1</strong> — the finding, always visible. <strong>Layer 2</strong> — click to expand: what it means and why it matters. <strong>Layer 3</strong> — click again inside that: the exact data, tables, and sources behind it.</span>
+  </div>
+</div>
+
+<!-- FINDING 1 -->
+<section class="findings wrap">
+  <div class="finding-num">FINDING 01</div>
+  <div class="headline">
+    <h2>Women are arrested at a higher rate in Surrey than in similar neighbouring areas — for violence offences specifically.</h2>
+    <div class="stat">23.8% vs 19.1%</div>
+    <p>Female share of Violence Against the Person arrests, Surrey vs. the rest of England &amp; Wales, 2024/25. The gap has grown for three years running and is statistically significant against every comparable neighbouring force.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>We compared Surrey's arrest figures against the England &amp; Wales average, and then separately against four similar neighbouring forces (Hampshire, Sussex, Kent, Thames Valley) to rule out the possibility that Surrey is simply different from cities or very different regions. In every comparison, Surrey's female arrest share for this offence category came out higher, and the gap has been widening since 2022/23.</p>
+      <p>Importantly, this gap mostly disappears by the time cases reach a charging decision — Surrey's charge-stage figures are statistically indistinguishable from its neighbours. Something specific to the point of arrest, not general policing culture, appears to be driving this.</p>
+      <details>
+        <summary>See the data and sources</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Force</th><th>2022/23</th><th>2023/24</th><th>2024/25</th><th>Sig. vs Surrey</th></tr></thead>
+            <tbody>
+              <tr><td>Surrey</td><td>20.8%</td><td>22.3%</td><td>23.8%</td><td>—</td></tr>
+              <tr><td>Sussex</td><td>20.9%</td><td>21.0%</td><td>22.4%</td><td>p = 0.036</td></tr>
+              <tr><td>Hampshire</td><td>19.7%</td><td>19.2%</td><td>20.0%</td><td>p &lt; 0.0001</td></tr>
+              <tr><td>Kent</td><td>19.2%</td><td>18.4%</td><td>19.2%</td><td>p &lt; 0.0001</td></tr>
+              <tr><td>Thames Valley</td><td>17.4%</td><td>18.3%</td><td>17.4%</td><td>p &lt; 0.0001</td></tr>
+            </tbody>
+          </table>
+          <p>Age breakdown shows this is concentrated in adults, not children or young adults — the age range most associated with domestic partner relationships:</p>
+          <table class="mini">
+            <thead><tr><th>Age group</th><th>Surrey</th><th>Comparators</th></tr></thead>
+            <tbody>
+              <tr><td>10–17 years</td><td>31.5%</td><td>29.0%</td></tr>
+              <tr><td>18–20 years</td><td>21.9%</td><td>23.3%</td></tr>
+              <tr><td>21+ years</td><td>22.6%</td><td>18.3%</td></tr>
+            </tbody>
+          </table>
+          <span class="src-stamp">HOME OFFICE · ARRESTS OPEN DATA, MAR25</span>
+          <span class="src-stamp">MOJ · OUTCOMES BY OFFENCE, RAW EXPORT</span>
+          <p style="margin-top:10px;">Two-proportion z-tests, Surrey vs. each force, raw counts. Full methodology on the <a href="vatp.html">VATP Arrests page</a>.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- FINDING 2 -->
+<section class="findings wrap">
+  <div class="finding-num">FINDING 02</div>
+  <div class="headline">
+    <h2>Surrey Police refers far fewer domestic abuse cases to the safeguarding process (MARAC) than police elsewhere.</h2>
+    <div class="stat">49.1% vs 63.6%</div>
+    <p>Share of MARAC referrals made by the police, Surrey vs. England &amp; Wales, year ending March 2025 — a 14.4 percentage point gap.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>MARAC exists to protect domestic abuse victims judged to be at high risk of serious harm. Police are normally the largest single source of referrals into that process. In Surrey, police account for a noticeably smaller share of referrals than the national pattern — meaning either fewer high-risk cases are being identified by officers, or identified cases aren't being referred.</p>
+      <p>When we asked Surrey Police directly whether any audit exists to catch cases that should have been referred but weren't, the answer was: no information held. There is currently no known mechanism to catch a missed referral.</p>
+      <details>
+        <summary>See the data and sources</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Measure</th><th>Surrey</th><th>England &amp; Wales</th></tr></thead>
+            <tbody>
+              <tr><td>MARAC cases per 10,000 adult females</td><td>37.10</td><td>50.25</td></tr>
+              <tr><td>Repeat cases (%)</td><td>24.79%</td><td>29.43%</td></tr>
+              <tr><td>Referred by police (%)</td><td>49.14%</td><td>63.56%</td></tr>
+            </tbody>
+          </table>
+          <span class="src-stamp">ONS · DOMESTIC ABUSE DATA TOOL, MAR25</span>
+          <span class="src-stamp">FOI 004984/25 — SURREY POLICE</span>
+          <p style="margin-top:10px;">Full breakdown, including the FOI correspondence, on the <a href="marac.html">MARAC Gap page</a>.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- FINDING 3 -->
+<section class="findings wrap">
+  <div class="finding-num">FINDING 03</div>
+  <div class="headline">
+    <h2>Surrey Police deliberately increased arrests, including for domestic abuse, from October 2023.</h2>
+    <div class="stat">"Our Plan" — Oct 2023</div>
+    <p>Surrey Police's own Force Management Statement states arrests rose "most prominently" after this strategic plan launched, with tackling Violence Against Women and Girls named as an explicit objective.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>This isn't inferred — it's Surrey Police's own public statement. Their Force Management Statement 2024–2025 explicitly credits "Our Plan," launched October 2023, with driving up arrests, and names tackling VAWG as one of two headline missions.</p>
+      <p>This is a legitimate, publicly declared policing priority, not evidence of wrongdoing on its own. But a genuine crackdown on VAWG offending should mostly increase arrests of male perpetrators, since most domestic abuse offending is male-on-female. If the female arrest share rose specifically alongside it, that points toward a broader "arrest more readily" shift that may not have distinguished victims from perpetrators as carefully as it should.</p>
+      <details>
+        <summary>See the data and sources</summary>
+        <div class="layer3-body">
+          <div class="quote">"Since the launch of Our Plan in Surrey Police in October 2023... Arrests overall have risen considerably... Surrey is among the fastest improving forces for tackling violence against women and girls."</div>
+          <div class="quote">"Arrest demand for custody has increased most significantly over the past 12-18 months... most prominent after the introduction of Our Plan which came with an increased focus on arrests and investigative outcomes."</div>
+          <p>Named strategic objectives: <em>Mission 1, Objective 1.2 — "Demonstrate dramatic progress on tackling Violence Against Women and Girls (VAWG)."</em> <em>Mission 2, Objectives 2.3 &amp; 2.4 — "Increase solved &amp; charge/summons outcomes."</em></p>
+          <span class="src-stamp">SURREY POLICE · FORCE MANAGEMENT STATEMENT 2024–25</span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- FINDING 4 -->
+<section class="findings wrap">
+  <div class="finding-num">FINDING 04</div>
+  <div class="headline">
+    <h2>National guidance told every MARAC area to build a "counter allegations" process into their protocol. Surrey's current protocol has none.</h2>
+    <div class="stat">Sept 2023 → March 2025</div>
+    <p>SafeLives — the national body behind MARAC — issued this instruction 18 months before Surrey's most recent protocol update. The gap is directly checkable in Surrey's own published document.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>Counter allegations happen when both people in an incident accuse each other. Misidentifying who the real victim is in these situations is a recognised national problem — serious enough that SafeLives published dedicated guidance in September 2023, specifically instructing local areas to add a "counter allegations pathway" to their MARAC operating protocol.</p>
+      <p>Surrey's MARAC Protocol was updated in March 2025 — eighteen months later. We read it in full. It covers referral criteria, risk assessment, information sharing, and governance in detail. It does not mention counter allegations, primary aggressor identification, or anything addressing this specific, named national instruction.</p>
+      <p>This is the clearest, most directly checkable documentary gap in the whole picture — it doesn't rely on statistics or inference at all.</p>
+      <details>
+        <summary>See the data and sources</summary>
+        <div class="layer3-body">
+          <div class="quote">"Marac Operating Protocol to include counter allegations pathway and short information on violent resistance." — SafeLives, "Responding to Counter Allegations: Guidance," September 2023</div>
+          <p>Surrey MARAC Protocol (March 2025) section list, checked in full: Introduction · Definition of Domestic Abuse · Coercive/Controlling Behaviour · Economic Abuse · Aims of MARAC · Membership &amp; Responsibilities · Chairing &amp; Administration · Referral Criteria · How to Refer · Research · Action Planning · Emergency MARAC · Governance · Equality &amp; Diversity · Information Sharing. <strong>No counter allegations section present.</strong></p>
+          <span class="src-stamp">SAFELIVES · COUNTER ALLEGATIONS GUIDANCE, SEPT 2023</span>
+          <span class="src-stamp">SURREY MARAC PROTOCOL, MAR 2025</span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- FINDING 5 -->
+<section class="findings wrap">
+  <div class="finding-num">FINDING 05</div>
+  <div class="headline">
+    <h2>This isn't a fringe theory — it's a recognised, actively studied national problem.</h2>
+    <div class="stat">"the 5 M's"</div>
+    <p>Peer-reviewed research and national campaigning reports confirm domestic abuse victims being wrongly arrested via counter-allegations is a known, current, and worsening issue in England &amp; Wales policing.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>A 2025 academic study (Barlow &amp; Walklate, funded by the N8 Policing Research Partnership) interviewed both frontline officers and domestic abuse victim-survivors about exactly this problem. Officers themselves described cases of women being wrongly arrested. The researchers identified five recurring factors — manipulation, misidentification, miscommunication, misunderstanding, and minimisation — that combine to produce these outcomes.</p>
+      <p>A separate 2026 report found that among domestic abuse victims supported by one national charity, 30–40% had either been threatened with arrest or criminalised themselves.</p>
+    </div>
+  </details>
+</section>
+
+<div class="wrap">
+  <div class="synthesis">
+    <div class="label">Putting it together</div>
+    <h2>What the evidence supports — and what it doesn't</h2>
+    <ol>
+      <li>Surrey arrests a higher share of women for violence offences than similar areas, and the gap is growing (Finding 1).</li>
+      <li>That gap is concentrated in adults, not children — the age range where domestic abuse is most common (Finding 1).</li>
+      <li>The gap mostly disappears by charge stage, suggesting something specific happens at the point of arrest, not throughout the whole justice process (Finding 1).</li>
+      <li>Surrey's own safeguarding referral rate for domestic abuse is well below the national rate, and no mechanism exists to catch missed cases (Finding 2).</li>
+      <li>Surrey Police openly pushed to increase arrests, including for domestic abuse, from October 2023 (Finding 3).</li>
+      <li>National guidance said every area needed a counter-allegations process by 2023. Surrey's current protocol, updated 18 months later, doesn't have one (Finding 4).</li>
+      <li>This exact combination — arrest-first pressure without robust primary-aggressor guidance — is a documented, actively researched national problem, not a Surrey-specific theory (Finding 5).</li>
+    </ol>
+    <div class="caveat-final">
+      <strong>What this doesn't prove:</strong> none of this establishes that any individual arrest was wrong, or that Surrey Police is acting in bad faith. Surrey's arrest increase was a public, legitimate strategic choice. What the evidence supports is a specific, answerable question: has that arrest-first push, combined with a documented gap in counter-allegation guidance, resulted in domestic abuse victims being wrongly arrested in Surrey more often than it should? That question is not yet answered — it's the question two pending Freedom of Information requests, tracked on the <a href="marac.html" style="color:#fff;">MARAC Gap page</a>, are trying to get closer to.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <hr class="rule">
+    Every figure and quotation on this page is sourced and independently checked against the original document or dataset. Last updated 2 Aug 2026. <a href="index.html">← Back to hub</a>
+  </div>
+</footer>
+
+</body>
+</html>
