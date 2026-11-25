@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What the FOI Answers Show — Surrey Policing Record</title>
+<style>
+  :root{
+    --paper:#EDEEEA; --paper-raised:#F7F7F4; --ink:#1B2430; --ink-soft:#4A5361;
+    --rule:#C7C2B8; --teal:#2B5D63; --teal-deep:#1D4247; --amber:#B65C1F; --verified:#3F6C4C;
+    --mono:"IBM Plex Mono","SF Mono","Courier New",monospace;
+    --serif:"Iowan Old Style","Source Serif 4",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,"Public Sans","Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.55;}
+  a{color:var(--teal-deep);}
+  .wrap{max-width:940px; margin:0 auto; padding:0 28px;}
+
+  header.masthead{border-bottom:2px solid var(--ink); padding:22px 0 16px; background:var(--paper);}
+  .masthead-row{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;}
+  .brand{font-family:var(--mono); font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-soft);}
+  .brand strong{color:var(--ink);}
+  nav.top{font-family:var(--mono); font-size:12.5px; display:flex; gap:20px; flex-wrap:wrap;}
+  nav.top a{color:var(--ink-soft); text-decoration:none; letter-spacing:0.04em;}
+  nav.top a:hover{color:var(--teal-deep); text-decoration:underline;}
+  nav.top a.current{color:var(--ink); border-bottom:1.5px solid var(--amber); padding-bottom:2px;}
+
+  .pagehead{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;}
+  .eyebrow::before{content:"§ ";}
+  h1{font-family:var(--serif); font-weight:500; font-size:clamp(26px,4vw,38px); line-height:1.2; margin:0 0 16px; max-width:24ch;}
+  .dek{font-size:16.5px; color:var(--ink-soft); max-width:66ch; margin:0 0 20px;}
+
+  .howto{background:var(--paper-raised); border:1px solid var(--rule); padding:16px 20px; font-size:13.5px; color:var(--ink-soft); display:flex; gap:14px; align-items:flex-start;}
+  .howto .icon{font-family:var(--mono); color:var(--teal-deep); font-size:16px; flex-shrink:0;}
+
+  section.findings{padding:40px 0;}
+  section.findings + section.findings{border-top:1px solid var(--rule);}
+  .finding-num{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; color:var(--amber); margin-bottom:10px;}
+
+  .headline{border:1.5px solid var(--ink); background:var(--paper-raised); padding:26px 28px;}
+  .headline h2{font-family:var(--serif); font-weight:500; font-size:22px; margin:0 0 10px; line-height:1.3;}
+  .headline .stat{font-family:var(--serif); font-size:clamp(24px,3.3vw,32px); color:var(--amber); margin:6px 0 12px;}
+  .headline p{font-size:15px; color:var(--ink-soft); margin:0; max-width:64ch;}
+
+  details{border:1px solid var(--rule); border-top:none; background:var(--paper);}
+  details > summary{
+    list-style:none; cursor:pointer; padding:14px 28px; font-family:var(--mono); font-size:12.5px;
+    letter-spacing:0.04em; color:var(--teal-deep); display:flex; align-items:center; gap:10px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  details > summary::-webkit-details-marker{display:none;}
+  details > summary::before{content:"+"; font-size:16px; width:16px; display:inline-block; color:var(--amber);}
+  details[open] > summary::before{content:"–";}
+  details > summary:hover{background:rgba(43,93,99,0.05);}
+  .layer2-body{padding:6px 28px 22px; font-size:14.5px;}
+  .layer2-body p{margin:0 0 14px; max-width:66ch;}
+  .layer2-body details{margin-top:14px; border:1px solid var(--rule); background:var(--paper-raised);}
+  .layer2-body details > summary{padding:11px 18px; font-size:11.5px; color:var(--ink-soft);}
+  .layer2-body details > summary::before{color:var(--teal);}
+  .layer3-body{padding:4px 18px 18px;}
+  .layer3-body p{font-size:13.5px;}
+
+  table.mini{width:100%; border-collapse:collapse; font-size:12.5px; margin:8px 0;}
+  table.mini th{text-align:left; font-family:var(--mono); font-size:10px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-soft); border-bottom:1px solid var(--ink); padding:6px 8px 6px 0;}
+  table.mini td{padding:6px 8px 6px 0; border-bottom:1px solid var(--rule); font-family:var(--mono); vertical-align:top;}
+  table.mini td:first-child{font-family:var(--sans);}
+
+  .src-stamp{font-family:var(--mono); font-size:10.5px; color:var(--teal-deep); border:1px solid var(--teal); padding:2px 7px; display:inline-block; margin:4px 6px 4px 0; background:rgba(43,93,99,0.06);}
+  .quote{border-left:2px solid var(--amber); padding:6px 0 6px 16px; margin:12px 0; font-style:italic; color:var(--ink-soft); font-size:13.5px;}
+  .gap-flag{padding:14px 18px; background:rgba(182,92,31,0.07); border-left:3px solid var(--amber); font-size:13px; margin-top:12px;}
+  .gap-flag .label{font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--amber); margin-bottom:6px;}
+
+  .synthesis{margin-top:50px; padding:34px 32px; background:var(--ink); color:var(--paper);}
+  .synthesis .label{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#B8C4C6; margin-bottom:14px;}
+  .synthesis h2{font-family:var(--serif); font-weight:500; font-size:21px; color:#fff; margin:0 0 16px;}
+  .synthesis ol{padding-left:20px; margin:0 0 20px;}
+  .synthesis li{margin-bottom:10px; font-size:14px; color:#D8D9D3;}
+  .synthesis .caveat-final{font-size:13px; color:#B8C4C6; border-top:1px solid #3A4552; padding-top:16px; margin-top:16px;}
+  .synthesis a{color:#fff;}
+
+  section.tracker{padding:44px 0 10px;}
+  section.tracker h2{font-family:var(--serif); font-weight:500; font-size:22px; margin:0 0 14px;}
+
+  footer{padding:40px 0 60px; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft);}
+  footer .rule{border:none; border-top:1px solid var(--rule); margin:0 0 20px;}
+  a:focus-visible, summary:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <div class="brand"><strong>SURREY POLICING RECORD</strong> — public evidence archive</div>
+    <nav class="top">
+      <a href="index.html">Home</a>
+      <a href="marac.html">MARAC Gap</a>
+      <a href="vatp.html">VATP Arrests</a>
+      <a href="findings.html">The Full Picture</a>
+      <a href="foi.html" class="current">FOI Findings</a>
+    </nav>
+  </div>
+</header>
+
+<div class="pagehead wrap">
+  <div class="eyebrow">Freedom of Information — what Surrey's own answers show</div>
+  <h1>Seven concerns raised by Surrey Police's own FOI answers</h1>
+  <p class="dek">Over 2025 and 2026, Surrey Police, the Surrey Police and Crime Commissioner's office and the IOPC answered dozens of Freedom of Information requests about complaints, evidence, arrests and domestic abuse safeguarding. Read together, the answers raise seven concerns. Each one below is drawn from the bodies' own words and figures, with the FOI reference given so it can be checked.</p>
+  <div class="howto">
+    <span class="icon">›</span>
+    <span><strong>Layer 1</strong> — the concern, always visible. <strong>Layer 2</strong> — click "How do we know this?" for the explanation. <strong>Layer 3</strong> — click again inside that for the figures, quotations and FOI references.</span>
+  </div>
+</div>
+
+<!-- CONCERN 1 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 01</div>
+  <div class="headline">
+    <h2>Surrey Police's statements about what information it holds have turned out to be wrong.</h2>
+    <div class="stat">"1,000+ hours" → answered in 6 weeks</div>
+    <p>Surrey Police refused a request on cost grounds, saying the records couldn't be searched. Six weeks later it produced the same kind of data case by case. Similar contradictions appear on MARAC audits and on deleted footage.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>In March 2025 Surrey Police refused to say how many complaints it had suspended under Regulation 40 (the power to pause a complaint while a criminal case runs). It said Reg 40 cases were "not coded or tagged", that 12,114 records would need checking by hand, and that this would take over 1,000 hours. In April 2025, answering a new request, it listed every suspended case from January 2024 with dates, allegation types and IOPC involvement. It later produced a full table of 132 cases going back to 2021.</p>
+      <p>The same pattern appears elsewhere. Surrey Police said it holds no audit of whether officers refer high-risk domestic abuse cases to MARAC. Yet the MARAC intranet page it disclosed in the same response says "a recent audit revealed many cases are not being referred to MARAC". It refused to count how much body-worn video was deleted after complaints, saying complaint files would need reading by hand. In another response it confirmed that its deletion logs are searchable by date, incident reference, user and reason.</p>
+      <details>
+        <summary>See the references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>What Surrey Police said</th><th>What it later disclosed</th></tr></thead>
+            <tbody>
+              <tr><td>Reg 40 cases "not coded or tagged"; 12,114 records; 1,000+ hours (001072/25, Mar 2025)</td><td>Case-by-case list of 48 suspensions (001418/25, Apr 2025); 132 cases since 2021 (003861/25)</td></tr>
+              <tr><td>No audits of MARAC referral compliance held (005027/25)</td><td>Its own intranet page, disclosed in the same response: "A recent audit revealed many cases are not being referred to MARAC"</td></tr>
+              <tr><td>Deletions after a complaint can't be counted without manual review of complaint records (005726/25)</td><td>BWV logs record deletions, overwrites and preservation, and are searchable by date, incident reference, user and reason (<a href="https://www.whatdotheyknow.com/request/digital_evidence_deletion_audit">006094/25</a>)</td></tr>
+            </tbody>
+          </table>
+          <span class="src-stamp">FOI 001072/25</span><span class="src-stamp">FOI 001418/25</span><span class="src-stamp">FOI 003861/25</span><span class="src-stamp">FOI 005027/25</span><span class="src-stamp">FOI 006094/25</span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- CONCERN 2 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 02</div>
+  <div class="headline">
+    <h2>Surrey Police does not record the information it would need to know whether domestic abuse victims are being harmed by its processes.</h2>
+    <div class="stat">No field. No audit. No record.</div>
+    <p>Its complaints database has no field for whether a complainant is a domestic abuse victim. It holds no audit of missed MARAC referrals. Missed referrals aren't recorded unless they lead to disciplinary action.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>Asked to show which suspended complaints involved people also recorded as domestic abuse victims, Surrey Police said there is no data field on the Professional Standards database to capture this. It cannot tell whether its complaint suspensions fall disproportionately on victims.</p>
+      <p>On MARAC, the safeguarding meetings for high-risk domestic abuse victims, Surrey Police said no reviews are carried out specifically on referral compliance. It added that missed referrals that don't meet the threshold for formal or disciplinary action "would not be recorded". It is now building an automatic referral system with a weekly audit of missed cases, but says it holds no business case or problem statement explaining why.</p>
+      <p>Meanwhile the police share of MARAC referrals in Surrey has roughly halved, while the number of cases has grown.</p>
+      <details>
+        <summary>See the data and references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Quarter</th><th>MARAC cases</th><th>Referred by police</th></tr></thead>
+            <tbody>
+              <tr><td>2022 Q1</td><td>1,485</td><td>89.8%</td></tr>
+              <tr><td>2023 Q1</td><td>1,593</td><td>64.7%</td></tr>
+              <tr><td>2024 Q1</td><td>1,614</td><td>57.1%</td></tr>
+              <tr><td>2025 Q1</td><td>1,868</td><td>49.1%</td></tr>
+              <tr><td>2026 Q1</td><td>2,192</td><td>46.8%</td></tr>
+            </tbody>
+          </table>
+          <p>Police-only MARAC referrals were 1,059 (2022), 918 (2023) and 980 (2024), against about 17,500 domestic incidents recorded each year.</p>
+          <span class="src-stamp">FOI 005078/25 — NO DA-VICTIM FIELD</span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/low_marac_referral_concerns">FOI 003684/26</a></span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/marac_concerns_2">FOI 004061/26</a></span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/surrey_county_council_safer_comm">SURREY CC MARAC DATA</a></span>
+          <p style="margin-top:10px;">More on the <a href="marac.html">MARAC Gap page</a>.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- CONCERN 3 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 03</div>
+  <div class="headline">
+    <h2>There is no published procedure for keeping footage once a complaint is made, and custody CCTV is overwritten after 31 days.</h2>
+    <div class="stat">30 days BWV · 31 days custody CCTV</div>
+    <p>Body-worn video is deleted automatically after 30 days unless someone saves it. Custody CCTV is overwritten after 31 days, and no record of deletions is kept. Surrey Police has never shown a procedure that makes sure complaint evidence is saved in time.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>Surrey Police told us custody CCTV is "either downloaded or overwritten as per the 31 day retention CCTV script", and that it does not keep a record of deletions. Its Body Worn Video Policy says footage not marked as evidence is deleted after 30 days. Its BWV system logged around a million deletion or overwrite events a year in 2023–2025.</p>
+      <p>The BWV policy does say the Chief Constable has a statutory duty to preserve evidence relating to complaints. But that sentence sits inside the section on deaths and serious injuries, and no procedure follows it: nothing says who must save footage when a complaint arrives, by when, or how that is checked. Nothing published covers custody CCTV and complaints at all.</p>
+      <p>This matters most when a complaint is suspended. IOPC statutory guidance says that even then, steps should be taken to secure evidence such as CCTV that may otherwise be lost. With 30–31 day deletion and no procedure, that can't reliably happen.</p>
+      <details>
+        <summary>See the data and references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Year</th><th>BWV deletion / overwrite events</th><th>Retention override events</th></tr></thead>
+            <tbody>
+              <tr><td>2023</td><td>976,155</td><td>274,061</td></tr>
+              <tr><td>2024</td><td>1,048,576*</td><td>308,952</td></tr>
+              <tr><td>2025 (to 11 Dec)</td><td>1,017,560</td><td>283,194</td></tr>
+            </tbody>
+          </table>
+          <p>*1,048,576 is exactly the maximum number of rows an Excel worksheet can hold, so the 2024 figure appears to have been cut off. The true number is likely higher.</p>
+          <div class="quote">"Chief Officers have a statutory duty to obtain and preserve evidence relating to complaints, conduct matters and DSI matters. BWV footage must be obtained and preserved in line with this duty." — Body Worn Video Policy (Surrey and Sussex) 1133, para 22.3, within section 22 on Death or Serious Injury matters</div>
+          <div class="quote">"…steps should be taken to secure evidence, such as CCTV, which may otherwise be lost." — IOPC Statutory Guidance 2020, para 15.8, quoted by Surrey Police in FOI 001958/25</div>
+          <span class="src-stamp">FOI 000736/25 — CUSTODY CCTV</span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/digital_evidence_deletion_audit">FOI 006094/25 — BWV LOGS</a></span>
+          <span class="src-stamp"><a href="https://www.surrey.police.uk/SysSiteAssets/foi-media/surrey/policies/body-worn-video-policy-surrey-and-sussex-1133.pdf">BWV POLICY 1133</a></span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- CONCERN 4 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 04</div>
+  <div class="headline">
+    <h2>Complaints against the police are frozen for long periods, with almost no outside check.</h2>
+    <div class="stat">132 suspended · 11 reviewed by the IOPC</div>
+    <p>Between January 2021 and April 2025, Surrey Police suspended 132 complaints under Regulation 40. Some stayed frozen for years. Only 11 were ever taken to the IOPC.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>Regulation 40 lets a force pause a complaint if continuing would prejudice a criminal investigation or trial. The IOPC says this is a high threshold: there must be a specific, identified and significant prejudice. In January 2025 the IOPC warned forces that its caseworkers had seen several suspensions with no such prejudice identified.</p>
+      <p>Surrey Police's own case table shows long suspensions, many still live, and very few reviewed externally. About 50 of the 132 cases involve domestic-abuse-type allegations such as coercive control, stalking, harassment or breach of a restraining order. The data does not say who was accused in those cases (see Concern 2).</p>
+      <p>Asked about oversight, the Police and Crime Commissioner's office told the Police and Crime Panel in June 2025 that its Head of Complaints had "not identified any concerns for the use of Reg 40". Surrey Police says Reg 40 cases aren't tagged in its system, so it is unclear what that scrutiny examined.</p>
+      <details>
+        <summary>See the data and references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Measure (Jan 2021 – Apr 2025)</th><th>Figure</th></tr></thead>
+            <tbody>
+              <tr><td>Complaints suspended under Reg 40</td><td>132</td></tr>
+              <tr><td>Median recorded length of suspension</td><td>128 days</td></tr>
+              <tr><td>Suspensions recorded as over 365 days</td><td>16</td></tr>
+              <tr><td>Longest recorded</td><td>1,048 days, still live</td></tr>
+              <tr><td>Still suspended when data was produced</td><td>40</td></tr>
+              <tr><td>Taken to the IOPC for review</td><td>11</td></tr>
+            </tbody>
+          </table>
+          <p>Surrey Police's 2025 table appears to count working days: the same cases show longer, calendar-day durations in its earlier response (001958/25). The true elapsed times are therefore likely to be longer than shown.</p>
+          <p>The IOPC separately reported 12 challenges to Surrey suspensions between January 2022 and April 2025. It agreed with Surrey in 8, partly agreed in 3, and 1 was pending.</p>
+          <span class="src-stamp">FOI 003861/25</span><span class="src-stamp">FOI 001958/25</span><span class="src-stamp">IOPC FOI 5025495</span><span class="src-stamp">IOPC FOI 5025563 — JAN 2025 NEWSLETTER</span><span class="src-stamp">OPCC FOI SU3519</span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- CONCERN 5 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 05</div>
+  <div class="headline">
+    <h2>One arrest justification is used about 14,000 times a year, and Surrey Police has never checked how.</h2>
+    <div class="stat">14,307 arrests in 12 months</div>
+    <p>"To allow the prompt and effective investigation" was cited in 1,054–1,328 arrests every month between July 2024 and June 2025. Surrey Police says officers are "expected" to add specific reasons, but has carried out no audit or review.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>Under PACE Code G, an arrest must be necessary, not just lawful. "Prompt and effective investigation" is one of the permitted reasons, but case law (including <em>Richardson v Chief Constable of West Midlands Police</em>, 2011) says it needs case-specific justification. It can't be a default.</p>
+      <p>Surrey Police says its custody officers are "expected" to make sure this reason is supported by the specific part of Code G that applies. It also says no internal reviews or reports have been carried out on its use. A request asking how often it is used on its own went unanswered for over a year. It is now with the Information Commissioner, and a fresh request has been made.</p>
+      <details>
+        <summary>See the data and references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Month</th><th>Arrests citing it</th><th>Month</th><th>Arrests citing it</th></tr></thead>
+            <tbody>
+              <tr><td>Jul 2024</td><td>1,164</td><td>Jan 2025</td><td>1,182</td></tr>
+              <tr><td>Aug 2024</td><td>1,185</td><td>Feb 2025</td><td>1,149</td></tr>
+              <tr><td>Sep 2024</td><td>1,054</td><td>Mar 2025</td><td>1,155</td></tr>
+              <tr><td>Oct 2024</td><td>1,190</td><td>Apr 2025</td><td>1,163</td></tr>
+              <tr><td>Nov 2024</td><td>1,121</td><td>May 2025</td><td>1,328</td></tr>
+              <tr><td>Dec 2024</td><td>1,325</td><td>Jun 2025</td><td>1,291</td></tr>
+            </tbody>
+          </table>
+          <div class="quote">"It is expected that where 'prompt and effective investigation' is used this is supplemented with further information justifying which part of Code G 2.9(e)(i-v) applies." — Surrey Police, FOI 788/25</div>
+          <span class="src-stamp">FOI 002979/25</span><span class="src-stamp">FOI 788/25</span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/the_recording_of_arrest_justific">UNANSWERED REQUEST, OCT 2025</a></span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/pace_code_g_arrests_where_prompt">NEW REQUEST, NOV 2026</a></span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- CONCERN 6 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 06</div>
+  <div class="headline">
+    <h2>Requests and complaints about these issues are delayed, refused or labelled "vexatious" rather than answered.</h2>
+    <div class="stat">7–8 months late · "vexatious" · "abuse of process"</div>
+    <p>Several requests took seven to eight months to answer. One got no reply at all. The Police and Crime Commissioner's office refused a request about its own training and complaints as "vexatious", and treated a complaint about Reg 40 oversight as an "abuse of process".</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>The law requires an answer within 20 working days. Requests to Surrey Police made in February 2025 about custody CCTV, complaint evidence and arrest necessity were answered on 1 October 2025. The Information Commissioner has criticised Surrey Police's FOI compliance publicly before.</p>
+      <p>The Police and Crime Commissioner's office says that, since September 2023, it has received about 31 complaints alleging systemic problems in Surrey Police. It referred them all to Surrey Police's own Professional Standards Department and upheld none itself (it says this isn't its role). About 11 were handled under its "unreasonable and unacceptable complainants" policy. One FOI request about its staff training and complaints was refused as vexatious, and is now with the Information Commissioner.</p>
+      <details>
+        <summary>See the references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Request</th><th>Received</th><th>Answered</th></tr></thead>
+            <tbody>
+              <tr><td>000736/25 — custody CCTV and Baird report</td><td>11 Feb 2025</td><td>1 Oct 2025</td></tr>
+              <tr><td>000787/25 — BWV and CCTV storage after complaints</td><td>12 Feb 2025</td><td>1 Oct 2025</td></tr>
+              <tr><td>000788/25 — PACE Code G</td><td>12 Feb 2025</td><td>1 Oct 2025</td></tr>
+              <tr><td>"Prompt and effective investigation" (WhatDoTheyKnow)</td><td>23 Oct 2025</td><td>Never — complaint to ICO, Nov 2026</td></tr>
+            </tbody>
+          </table>
+          <span class="src-stamp">OPCC FOI SU3878</span><span class="src-stamp">OPCC SU4146 / ICO IC-457060-S6Z9</span>
+          <span class="src-stamp"><a href="https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2024/09/surrey-police-show-a-lack-of-seriousness-about-their-obligations/">ICO, SEPT 2024</a></span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<!-- CONCERN 7 -->
+<section class="findings wrap">
+  <div class="finding-num">CONCERN 07</div>
+  <div class="headline">
+    <h2>The cost of getting it wrong is rising.</h2>
+    <div class="stat">£110k → £408k a year</div>
+    <p>Surrey Police's civil claim payouts nearly quadrupled between 2021/22 and 2023/24. False imprisonment claims settled rose from 3 to 12 a year. Strip searches of women and girls nearly doubled between 2022 and 2024, with no policy change after the Baird report.</p>
+  </div>
+  <details>
+    <summary>How do we know this?</summary>
+    <div class="layer2-body">
+      <p>Payouts are an imperfect measure. A single large claim can move the total, and settlements aren't admissions of liability. But the rise in false imprisonment and unlawful arrest claims fits the other concerns on this page.</p>
+      <p>After Dame Vera Baird KC's 2024 report on the treatment of women in Greater Manchester Police custody, Surrey Police held two meetings and circulated recommendations "where operationally practicable". It says there was no change to policy, no new or amended training, and no external audit.</p>
+      <details>
+        <summary>See the data and references</summary>
+        <div class="layer3-body">
+          <table class="mini">
+            <thead><tr><th>Financial year</th><th>Total paid</th><th>Claims</th><th>False imprisonment claims</th><th>Unlawful arrest claims</th></tr></thead>
+            <tbody>
+              <tr><td>2020/21</td><td>£180,574</td><td>76</td><td>3</td><td>5</td></tr>
+              <tr><td>2021/22</td><td>£110,281</td><td>60</td><td>6</td><td>4</td></tr>
+              <tr><td>2022/23</td><td>£276,449</td><td>63</td><td>8</td><td>3</td></tr>
+              <tr><td>2023/24</td><td>£407,687</td><td>83</td><td>12</td><td>4</td></tr>
+            </tbody>
+          </table>
+          <p>Calendar 2025 to date: 5 unlawful arrest and false imprisonment claims, £130,797; 13 false imprisonment and assault claims, £51,250.</p>
+          <table class="mini">
+            <thead><tr><th>Year</th><th>Strip searches of women and girls</th></tr></thead>
+            <tbody>
+              <tr><td>2022</td><td>59</td></tr>
+              <tr><td>2023</td><td>91</td></tr>
+              <tr><td>2024</td><td>112</td></tr>
+              <tr><td>2025 (part year)</td><td>53</td></tr>
+            </tbody>
+          </table>
+          <span class="src-stamp">FOI 003878/25</span>
+          <span class="src-stamp"><a href="https://www.whatdotheyknow.com/request/damages_and_compo">FOI 006532/25</a></span>
+          <span class="src-stamp">FOI 000736/25 — BAIRD &amp; STRIP SEARCH</span>
+        </div>
+      </details>
+    </div>
+  </details>
+</section>
+
+<div class="wrap">
+  <div class="synthesis">
+    <div class="label">Putting it together</div>
+    <h2>What the FOI answers support — and what they don't</h2>
+    <ol>
+      <li>Surrey Police's statements about what it holds can't be relied on. Three refusals or "not held" answers were contradicted by its own later disclosures (Concern 1).</li>
+      <li>Surrey Police does not record whether complainants are domestic abuse victims, and does not audit missed MARAC referrals. It cannot know whether its processes are failing victims (Concern 2).</li>
+      <li>Footage is deleted after 30–31 days, and no published procedure ensures complaint evidence is saved first (Concern 3).</li>
+      <li>Complaints can be frozen for long periods with very little outside review (Concern 4).</li>
+      <li>A heavily used arrest justification has never been audited (Concern 5).</li>
+      <li>Requests and complaints on these subjects are delayed, refused or labelled vexatious (Concern 6).</li>
+      <li>Payouts for false imprisonment and unlawful arrest are rising (Concern 7).</li>
+    </ol>
+    <div class="caveat-final">
+      <strong>What this doesn't prove:</strong> none of this shows that any particular arrest, suspension or deletion was wrong, or that anyone acted in bad faith. Several of the figures have innocent explanations that Surrey Police could give. What the answers do show is that Surrey Police often doesn't record, audit or publish the things that would let anyone, including Surrey Police itself, check. That is the gap these requests are trying to close. Corrections are welcome and will be shown, not hidden.
+    </div>
+  </div>
+</div>
+
+<section class="tracker wrap">
+  <h2>Requests still open</h2>
+  <table class="mini">
+    <thead><tr><th>Request</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.whatdotheyknow.com/request/pace_code_g_arrests_where_prompt">Arrests where "prompt and effective investigation" was the sole necessity ground</a></td><td>Sent 25 Nov 2026 · due 24 Dec 2026</td></tr>
+      <tr><td>000119/25 — domestic abuse victims' subject access requests and unlawful-arrest allegations</td><td>Clarification resent 25 Nov 2026 · due about 24 Dec 2026</td></tr>
+      <tr><td><a href="https://www.whatdotheyknow.com/request/the_recording_of_arrest_justific">"Prompt and effective investigation" (Oct 2025)</a></td><td>Never answered · complaint to ICO, 25 Nov 2026</td></tr>
+      <tr><td>OPCC SU4146 — refused as vexatious</td><td>With ICO (IC-457060-S6Z9) since Jan 2026</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <div class="wrap">
+    <hr class="rule">
+    Figures and quotations are taken from the bodies' own FOI responses and published documents, identified by reference number. Responses not published on WhatDoTheyKnow are held on file and can be provided on request. Last updated 25 Nov 2026. <a href="index.html">← Back to hub</a>
+  </div>
+</footer>
+
+</body>
+</html>
